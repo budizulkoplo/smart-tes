@@ -6,7 +6,7 @@ const statStyles = {
     blue: { border: 'border-blue-500', icon: 'bg-blue-600', iconComponent: <IconUsers size={24} /> },
     green: { border: 'border-emerald-500', icon: 'bg-emerald-600', iconComponent: <IconUserPlus size={24} /> },
     cyan: { border: 'border-cyan-500', icon: 'bg-cyan-500', iconComponent: <IconReport size={24} /> },
-    amber: { border: 'border-amber-500', icon: 'bg-amber-500', iconComponent: <IconBooks size={24} /> },
+    amber: { border: 'border-amber-500', icon: 'bg-amber-500', iconComponent: <IconHistory size={24} /> },
 };
 
 export default function Dashboard({ exams, students, teachers, sessions, recentExams, recentStudents }) {
