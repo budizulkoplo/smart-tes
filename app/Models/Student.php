@@ -19,9 +19,12 @@ class Student extends Authenticatable
     protected $fillable = [
         'classroom_id',
         'nisn',
+        'nik',
         'name',
         'password',
-        'gender'
+        'gender',
+        'no_hp',
+        'alamat'
     ];
 
     protected $hidden = [

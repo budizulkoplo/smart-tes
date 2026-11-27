@@ -86,7 +86,7 @@ export default function Dashboard({ exam_groups = [], stats = {}, student_classr
 
     return (
         <>
-            <Head title={`${appSetting?.app_name || 'SIBITI'} - Dashboard Siswa`} />
+            <Head title={`${appSetting?.app_name || 'SMART-TES'} - Dashboard Calon Karyawan`} />
             <div className="min-h-screen bg-slate-50 px-4 py-6 sm:px-6">
                 <div className="mx-auto max-w-7xl">
                     <header className="flex items-center justify-between rounded-2xl bg-white px-5 py-4 shadow-sm ring-1 ring-slate-200 sm:px-7">
@@ -94,13 +94,13 @@ export default function Dashboard({ exam_groups = [], stats = {}, student_classr
                             {logoUrl ? <img src={logoUrl} alt="Logo sekolah" className="h-11 w-11 rounded-xl object-contain" /> : null}
                             <div>
                                 <p className="font-bold text-slate-900">{appSetting?.app_name || 'SIBITI'}</p>
-                                <p className="text-sm text-slate-500">{appSetting?.school_name || 'Portal ujian sekolah'}</p>
+                                <p className="text-sm text-slate-500">{appSetting?.school_name || 'Portal tes calon karyawan'}</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-3">
                             <div className="hidden text-right sm:block">
                                 <p className="text-sm font-semibold text-slate-900">{student?.name}</p>
-                                <p className="text-xs text-slate-500">NISN {student?.nisn}</p>
+                                <p className="text-xs text-slate-500">NIK {student?.nik || student?.nisn}</p>
                             </div>
                             <Link href={route('student.logout')} method="post" as="button" className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-700">
                                 <IconLogout size={16} /> Keluar
@@ -150,7 +150,7 @@ export default function Dashboard({ exam_groups = [], stats = {}, student_classr
                         <section id="daftar-hasil" className="mt-8">
                             <div className="mb-5 flex items-end justify-between gap-4">
                                 <div>
-                                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-teal-700">Ruang siswa</p>
+                                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-teal-700">Ruang tes</p>
                                     <h2 className="mt-2 text-2xl font-bold text-slate-900">Hasil ujian</h2>
                                     <p className="mt-1 text-sm text-slate-500">Hasil akan tampil setelah ujian selesai dikoreksi oleh guru.</p>
                                 </div>

@@ -46,6 +46,7 @@ Route::get('/', function () {
 
 //login students
 Route::post('/student/login', \App\Http\Controllers\LoginController::class)->name('student.login');
+Route::post('/student/register', [\App\Http\Controllers\LoginController::class, 'register'])->name('student.register');
 Route::post('/student/logout', [\App\Http\Controllers\LoginController::class, 'logout'])->name('student.logout');
 
 Route::middleware('auth')->group(function () {

@@ -29,12 +29,12 @@ export default function Login({ status, canResetPassword }) {
 
     return (
         <GuestLayout>
-            <Head title={`${appSetting?.app_name || 'SIBITI'} - Login Admin`} />
+            <Head title={`${appSetting?.app_name || 'SMART-TES'} - Login Admin`} />
 
             <div className="mb-7">
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-teal-700">Area administrator</p>
                 <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900">Masuk ke dashboard</h2>
-                <p className="mt-2 text-sm leading-6 text-slate-500">Kelola kelas, ujian, soal, dan hasil belajar sekolah.</p>
+                <p className="mt-2 text-sm leading-6 text-slate-500">Kelola tes, soal, sesi ujian, dan hasil calon karyawan.</p>
             </div>
             {status && <div className="mb-4 text-sm font-medium text-green-600">{status}</div>}
 

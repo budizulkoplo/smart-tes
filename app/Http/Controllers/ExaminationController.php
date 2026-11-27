@@ -83,11 +83,10 @@ class ExaminationController extends Controller
             ->whereNull('token_closed_at')
             ->where('start_time', '<=', now())
             ->where('end_time', '>=', now())
-            ->whereHas('exam', fn ($query) => $query->where('classroom_id', $student->classroom_id))
             ->first();
 
         if (!$session) {
-            return back()->withErrors(['token' => 'Token tidak valid, bukan untuk kelas Anda, atau sudah tidak aktif.']);
+            return back()->withErrors(['token' => 'Token tidak valid, sesi belum dimulai, atau sudah tidak aktif.']);
         }
 
         $group = ExamGroup::withTrashed()->firstOrCreate([

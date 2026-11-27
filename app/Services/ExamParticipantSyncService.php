@@ -12,7 +12,7 @@ class ExamParticipantSyncService
     public function syncSession(ExamSession $session): void
     {
         $session->loadMissing('exam');
-        $studentIds = Student::where('classroom_id', $session->exam->classroom_id)->pluck('id');
+        $studentIds = Student::query()->pluck('id');
 
         foreach ($studentIds as $studentId) {
             $group = ExamGroup::withTrashed()->firstOrCreate([
@@ -33,23 +33,19 @@ class ExamParticipantSyncService
 
     public function syncStudent(Student $student): void
     {
+        $student->loadMissing('classroom');
+
         $sessions = ExamSession::with('exam')
             ->where('end_time', '>=', now())
             ->get();
 
         foreach ($sessions as $session) {
-            if ((int) $session->exam?->classroom_id === (int) $student->classroom_id) {
-                $group = ExamGroup::withTrashed()->firstOrCreate([
-                    'exam_id' => $session->exam_id,
-                    'exam_session_id' => $session->id,
-                    'student_id' => $student->id,
-                ]);
-                if ($group->trashed()) $group->restore();
-            } else {
-                ExamGroup::where('exam_session_id', $session->id)
-                    ->where('student_id', $student->id)
-                    ->delete();
-            }
+            $group = ExamGroup::withTrashed()->firstOrCreate([
+                'exam_id' => $session->exam_id,
+                'exam_session_id' => $session->id,
+                'student_id' => $student->id,
+            ]);
+            if ($group->trashed()) $group->restore();
         }
     }
 }

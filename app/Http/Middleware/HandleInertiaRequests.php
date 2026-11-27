@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\AppSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -39,7 +40,7 @@ class HandleInertiaRequests extends Middleware
                 'super' => $request->user() ? $request->user()->isSuperAdmin() : false,
                 'teacher' => $request->user() ? $request->user()->isTeacher() : false,
             ],
-            'appSetting' => fn () => AppSetting::first(),
+            'appSetting' => fn () => Schema::hasTable('app_settings') ? AppSetting::first() : null,
         ];
     }
 }
