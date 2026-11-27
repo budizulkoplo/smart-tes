@@ -83,7 +83,7 @@ function AnswerDetail({ detail }) {
 
                 <div className="mt-6 grid gap-4 md:grid-cols-2">
                     <AnswerBox title="Jawaban Anda" tone="slate"><AnswerValue detail={detail} value={detail.student_answer} empty="Tidak dijawab" /></AnswerBox>
-                    <AnswerBox title={isEssay ? 'Keterangan' : 'Jawaban benar'} tone={isEssay ? 'amber' : isCorrect ? 'emerald' : 'teal'}><AnswerValue detail={detail} value={detail.correct_answer} empty={isEssay ? 'Dinilai secara manual oleh guru.' : 'Kunci jawaban belum tersedia.'} correct /></AnswerBox>
+                    <AnswerBox title={isEssay ? 'Keterangan' : 'Jawaban benar'} tone={isEssay ? 'amber' : isCorrect ? 'emerald' : 'teal'}><AnswerValue detail={detail} value={detail.correct_answer} empty={isEssay ? 'Dinilai secara manual oleh pihak yang berwenang.' : 'Kunci jawaban belum tersedia.'} correct /></AnswerBox>
                 </div>
             </div>
         </article>

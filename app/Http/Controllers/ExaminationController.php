@@ -317,7 +317,7 @@ class ExaminationController extends Controller
 
         $grade = $this->grade($examGroup);
         if (!$grade->isReleased()) {
-            return redirect()->route('student.dashboard')->with('info', 'Hasil ujian akan tampil setelah selesai dikoreksi oleh guru.');
+            return redirect()->route('student.dashboard')->with('info', 'Hasil ujian akan tampil setelah selesai dikoreksi oleh pihak yang berwenang.');
         }
 
         $answers = Answer::where('exam_id', $examGroup->exam_id)

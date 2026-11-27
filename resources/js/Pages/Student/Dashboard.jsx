@@ -152,7 +152,7 @@ export default function Dashboard({ exam_groups = [], stats = {}, student_classr
                                 <div>
                                     <p className="text-sm font-semibold uppercase tracking-[0.2em] text-teal-700">Ruang tes</p>
                                     <h2 className="mt-2 text-2xl font-bold text-slate-900">Hasil ujian</h2>
-                                    <p className="mt-1 text-sm text-slate-500">Hasil akan tampil setelah ujian selesai dikoreksi oleh guru.</p>
+                                    <p className="mt-1 text-sm text-slate-500">Hasil akan tampil setelah ujian selesai dikoreksi oleh pihak yang berwenang.</p>
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <span className="hidden items-center gap-1.5 text-sm text-slate-500 sm:flex"><IconClock size={17} /> {resultGroups.length} hasil</span>
@@ -172,9 +172,9 @@ export default function Dashboard({ exam_groups = [], stats = {}, student_classr
                                             <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">{group.exam?.duration} menit</span>
                                         </div>
                                         <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
-                                            <span className="inline-flex items-center gap-1.5 text-sm text-slate-500">{grade?.is_locked ? <span className="text-rose-600">Dikunci</span> : grade?.end_time && grade?.results_released ? <IconCheck className="text-emerald-600" size={17} /> : grade?.end_time ? <span className="text-amber-600">Menunggu koreksi guru</span> : <IconClock className="text-amber-600" size={17} />} {!grade?.is_locked && grade?.end_time && grade?.results_released ? `Nilai: ${grade?.grade ?? 0}` : null}</span>
+                                            <span className="inline-flex items-center gap-1.5 text-sm text-slate-500">{grade?.is_locked ? <span className="text-rose-600">Dikunci</span> : grade?.end_time && grade?.results_released ? <IconCheck className="text-emerald-600" size={17} /> : grade?.end_time ? <span className="text-amber-600">Menunggu koreksi</span> : <IconClock className="text-amber-600" size={17} />} {!grade?.is_locked && grade?.end_time && grade?.results_released ? `Nilai: ${grade?.grade ?? 0}` : null}</span>
                                             {grade?.is_locked ? (
-                                                <span className="rounded-xl bg-rose-100 px-4 py-2 text-sm font-semibold text-rose-700">Hubungi guru</span>
+                                                <span className="rounded-xl bg-rose-100 px-4 py-2 text-sm font-semibold text-rose-700">Hubungi pengawas/SDM</span>
                                             ) : grade?.end_time && grade?.results_released ? (
                                                 <Link href={route('student.examination.resultExam', group.id)} className="rounded-xl bg-slate-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">Lihat hasil</Link>
                                             ) : grade?.end_time ? (
