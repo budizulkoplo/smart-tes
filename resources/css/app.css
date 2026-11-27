@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .field {
+        @apply w-full rounded-lg border-slate-300 text-sm focus:border-teal-500 focus:ring-teal-500;
+    }
+}
+
+.no-transition * {
+    transition: none !important;
+}
+
+.question-content img,
+.ck-editor__editable_inline img {
+    max-width: 100%;
+    height: auto;
+}
+
+.question-content figure.image,
+.ck-editor__editable_inline figure.image {
+    max-width: 100%;
+}

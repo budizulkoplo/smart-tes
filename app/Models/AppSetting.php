@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class AppSetting extends Model
+{
+    protected $fillable = [
+        'app_name',
+        'school_logo',
+        'school_name',
+        'school_address',
+        'cheat_limit',
+    ];
+
+    protected $casts = [
+        'cheat_limit' => 'integer',
+    ];
+}
