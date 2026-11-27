@@ -18,7 +18,7 @@ export default function Confirmation({ exam_group: group, grade }) {
                     <Info icon={<IconClock size={20} />} label="Durasi" value={`${exam.duration} menit`} />
                     <Info icon={<IconFileDescription size={20} />} label="Sesi" value={group.exam_session?.title} />
                     <Info icon={<IconUser size={20} />} label="Nama peserta" value={group.student?.name} />
-                    <Info icon={<IconCheck size={20} />} label="NISN" value={group.student?.nisn} />
+                    <Info icon={<IconCheck size={20} />} label="NIK" value={group.student?.nik || group.student?.nisn} />
                 </div>
                 <div className="border-t border-slate-100 bg-slate-50 p-6 sm:p-8">
                     <p className="text-sm leading-6 text-slate-600">Pastikan koneksi internet stabil. Waktu ujian mulai dihitung saat tombol mulai ditekan. Jawaban yang sudah disimpan dapat diperiksa kembali selama waktu masih tersedia.</p>

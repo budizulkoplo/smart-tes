@@ -112,7 +112,7 @@ export default function Dashboard({ exam_groups = [], stats = {}, student_classr
                         <section className="rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-700 px-5 py-6 text-white shadow-sm sm:px-7">
                             <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                                 <div>
-                                    <h1 className="text-xl font-bold sm:text-2xl">Halo, {student?.name || 'siswa'}! &#x1F44B;</h1>
+                                    <h1 className="text-xl font-bold sm:text-2xl">Halo, {student?.name || 'Calon Karyawan'}! &#x1F44B;</h1>
                                     <p className="mt-1 text-sm text-white/85">Selamat datang di dashboard ujian online</p>
                                 </div>
                                 <div className="inline-flex w-fit items-center gap-2 rounded-full bg-white/20 px-4 py-2 text-sm font-semibold">

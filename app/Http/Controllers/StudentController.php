@@ -24,7 +24,11 @@ class StudentController extends Controller
     {
         //get students
         $students = Student::query()->when(request()->search, function ($students) {
-            $students = $students->where('name', 'like', '%' . request()->search . '%')->orWhere('nisn', 'like', '%' . request()->search . '%');
+            $students = $students->where(function ($query) {
+                $query->where('name', 'like', '%' . request()->search . '%')
+                    ->orWhere('nik', 'like', '%' . request()->search . '%')
+                    ->orWhere('nisn', 'like', '%' . request()->search . '%');
+            });
         })->with('classroom')->latest()->paginate(5);
 
         $classrooms = Classroom::all();
@@ -45,11 +49,11 @@ class StudentController extends Controller
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Data Siswa');
         $sheet->fromArray([
-            ['NISN', 'Nama', 'Jenis Kelamin (L/P)', 'Kelas', 'Password (opsional)'],
+            ['NIK', 'Nama', 'Jenis Kelamin (L/P)', 'Kelas', 'Password (opsional)'],
             ['CONTOH - HAPUS', 'Nama Siswa', 'L', 'Nama kelas sesuai aplikasi', ''],
         ]);
         $sheet->getStyle('A:A')->getNumberFormat()->setFormatCode('@');
-        $sheet->setCellValue('G1', 'Password kosong akan menggunakan NISN. Isi NISN sebagai teks agar angka nol di depan tidak hilang.');
+        $sheet->setCellValue('G1', 'Password kosong akan menggunakan NIK. Isi NIK sebagai teks agar angka nol di depan tidak hilang.');
 
         return response()->streamDownload(function () use ($spreadsheet) {
             (new Xlsx($spreadsheet))->save('php://output');
@@ -119,6 +123,7 @@ class StudentController extends Controller
 
             $students[] = [
                 'nisn' => $nisn,
+                'nik' => $nisn,
                 'name' => $name,
                 'gender' => $gender,
                 'classroom_id' => $classroom->id,
@@ -176,6 +181,7 @@ class StudentController extends Controller
         $student = Student::create([
             'name' => $request->name,
             'nisn' => $request->nisn,
+            'nik' => $request->nik ?? $request->nisn,
             'gender' => $request->gender,
             'password' => $request->password,
             'classroom_id' => $request->classroom_id
@@ -222,6 +228,7 @@ class StudentController extends Controller
             $student->update([
                 'name' => $request->name,
                 'nisn' => $request->nisn,
+                'nik' => $request->nik ?? $request->nisn,
                 'gender' => $request->gender,
                 'classroom_id' => $request->classroom_id
             ]);
@@ -231,6 +238,7 @@ class StudentController extends Controller
             $student->update([
                 'name' => $request->name,
                 'nisn' => $request->nisn,
+                'nik' => $request->nik ?? $request->nisn,
                 'gender' => $request->gender,
                 'password' => $request->password,
                 'classroom_id' => $request->classroom_id

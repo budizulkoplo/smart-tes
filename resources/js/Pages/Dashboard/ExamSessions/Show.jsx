@@ -29,7 +29,7 @@ export default function Show({ exam_session }) {
                     <div className='w-full md:w-4/12'>
                         <Search
                             url={route('exam_sessions.show', exam_session.id)}
-                            placeholder={'Cari nama atau NISN peserta'}
+                            placeholder={'Cari nama atau NIK peserta'}
                         />
                     </div>
                 </div>
@@ -68,14 +68,14 @@ export default function Show({ exam_session }) {
             </div>
 
             <div className='mb-3 flex items-center gap-2 rounded-xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm text-teal-800'>
-                <IconUsers size={18} /> Peserta ujian ditambahkan otomatis berdasarkan daftar siswa di kelas {exam_session.exam.classroom.title}.
+                <IconUsers size={18} /> Peserta ujian ditambahkan otomatis berdasarkan token ujian; tidak lagi dibatasi kelas.
             </div>
             <Table.Card title={'Peserta Ujian'}>
                 <Table>
                     <Table.Thead>
                         <tr>
                             <Table.Th className={'w-10'}>No</Table.Th>
-                            <Table.Th>NISN</Table.Th>
+                            <Table.Th>NIK</Table.Th>
                             <Table.Th>Nama</Table.Th>
                             <Table.Th>Jenis Kelamin</Table.Th>
                             <Table.Th></Table.Th>
@@ -89,7 +89,7 @@ export default function Show({ exam_session }) {
                                         {++i + (exam_session.exam_groups.current_page - 1) * exam_session.exam_groups.per_page}
                                     </Table.Td>
                                     <Table.Td>
-                                        {group.student.nisn}
+                                        {group.student.nik || group.student.nisn}
                                     </Table.Td>
                                     <Table.Td>
                                         {group.student.name}

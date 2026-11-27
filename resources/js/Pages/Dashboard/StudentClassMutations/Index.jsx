@@ -23,7 +23,7 @@ export default function Index({ classrooms = [], students = [], selectedClassroo
         if (!keyword) return students;
 
         return students.filter((student) => String(student.name || '').toLowerCase().includes(keyword)
-            || String(student.nisn || '').toLowerCase().includes(keyword));
+            || String(student.nik || student.nisn || '').toLowerCase().includes(keyword));
     }, [students, search]);
     const allVisibleSelected = filteredStudents.length > 0
         && filteredStudents.every((student) => data.student_ids.includes(student.id));
@@ -84,14 +84,14 @@ export default function Index({ classrooms = [], students = [], selectedClassroo
             {source ? <form onSubmit={submit} className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
                 <div className="mb-4 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
                     <div><h2 className="font-bold text-slate-800">Daftar siswa kelas {source.title}</h2><p className="text-sm text-slate-500">{students.length} siswa tersedia · {data.student_ids.length} siswa dipilih</p></div>
-                    <input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Cari nama atau NISN..." className="w-full rounded-lg border-slate-300 bg-white text-sm sm:w-64" />
+                    <input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Cari nama atau NIK..." className="w-full rounded-lg border-slate-300 bg-white text-sm sm:w-64" />
                 </div>
                 <div className="mb-3 flex items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm">
                     <label className="flex cursor-pointer items-center gap-2 font-semibold text-slate-700"><input type="checkbox" checked={allVisibleSelected} onChange={toggleVisibleStudents} disabled={!filteredStudents.length} className="rounded border-slate-300 text-teal-600 focus:ring-teal-500" /> Pilih semua yang tampil</label>
                     {errors.student_ids && <span className="text-xs text-rose-600">{errors.student_ids}</span>}
                 </div>
                 <div className="max-h-[45vh] overflow-y-auto rounded-lg border border-slate-200 bg-white">
-                    {filteredStudents.length ? <div className="divide-y divide-slate-100">{filteredStudents.map((student) => <label key={student.id} className="flex cursor-pointer items-center gap-3 px-4 py-3 hover:bg-slate-50"><input type="checkbox" checked={data.student_ids.includes(student.id)} onChange={() => toggleStudent(student.id)} className="rounded border-slate-300 text-teal-600 focus:ring-teal-500" /><span className="min-w-0 flex-1"><b className="block text-sm text-slate-800">{student.name}</b><span className="text-xs text-slate-500">NISN: {student.nisn || '-'}</span></span></label>)}</div> : <div className="p-8 text-center text-sm text-slate-500"><IconDatabaseOff className="mx-auto mb-2" size={24} strokeWidth={1.5} />{students.length ? 'Siswa tidak ditemukan.' : 'Belum ada siswa di kelas ini.'}</div>}
+                    {filteredStudents.length ? <div className="divide-y divide-slate-100">{filteredStudents.map((student) => <label key={student.id} className="flex cursor-pointer items-center gap-3 px-4 py-3 hover:bg-slate-50"><input type="checkbox" checked={data.student_ids.includes(student.id)} onChange={() => toggleStudent(student.id)} className="rounded border-slate-300 text-teal-600 focus:ring-teal-500" /><span className="min-w-0 flex-1"><b className="block text-sm text-slate-800">{student.name}</b><span className="text-xs text-slate-500">NIK: {student.nik || student.nisn || '-'}</span></span></label>)}</div> : <div className="p-8 text-center text-sm text-slate-500"><IconDatabaseOff className="mx-auto mb-2" size={24} strokeWidth={1.5} />{students.length ? 'Peserta tidak ditemukan.' : 'Belum ada peserta di kelas ini.'}</div>}
                 </div>
                 <div className="mt-4 flex flex-col justify-between gap-3 sm:flex-row sm:items-center"><p className="text-xs text-slate-500">Siswa yang dipindahkan akan otomatis disinkronkan ke peserta sesi ujian aktif.</p><Button type="submit" disabled={processing || !data.to_classroom_id || !data.student_ids.length} label={processing ? 'Memindahkan...' : 'Pindahkan Siswa'} className="border bg-teal-700 text-white hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-50" /></div>
             </form> : <div className="mt-6 rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500">Pilih kelas asal untuk menampilkan daftar siswa.</div>}

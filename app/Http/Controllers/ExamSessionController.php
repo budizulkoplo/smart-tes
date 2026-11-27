@@ -84,13 +84,14 @@ class ExamSessionController extends Controller
 
         $this->syncParticipants($exam_session);
 
-        // Daftar peserta dipaginasi dan dapat dicari berdasarkan nama atau NISN.
+        // Daftar peserta dipaginasi dan dapat dicari berdasarkan nama atau NIK.
         $examGroups = $exam_session->exam_groups()
             ->with('student.classroom')
             ->when(request('search'), function ($query) {
                 $search = request('search');
                 $query->whereHas('student', fn ($student) => $student
                     ->where('name', 'like', "%{$search}%")
+                    ->orWhere('nik', 'like', "%{$search}%")
                     ->orWhere('nisn', 'like', "%{$search}%"));
             })
             ->latest('id')

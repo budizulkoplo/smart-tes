@@ -40,6 +40,7 @@ class ExamGroupController extends Controller
                 $search = $request->search;
                 $query->where(function ($student) use ($search) {
                     $student->where('name', 'like', "%{$search}%")
+                        ->orWhere('nik', 'like', "%{$search}%")
                         ->orWhere('nisn', 'like', "%{$search}%");
                 });
             })

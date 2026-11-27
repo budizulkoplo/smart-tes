@@ -39,8 +39,8 @@
         <thead>
             <tr>
                 <th class="center" style="width: 35px">No</th>
-                <th>Nama Siswa</th>
-                <th>NISN</th>
+                <th>Nama Peserta</th>
+                <th>NIK</th>
                 <th>Sesi</th>
                 <th class="center">Nilai</th>
                 <th>Status Nilai</th>
@@ -52,7 +52,7 @@
                 <tr>
                     <td class="center">{{ $index + 1 }}</td>
                     <td>{{ $grade->student?->name ?: '-' }}</td>
-                    <td>{{ $grade->student?->nisn ?: '-' }}</td>
+                    <td>{{ $grade->student?->nik ?: $grade->student?->nisn ?: '-' }}</td>
                     <td>{{ $grade->exam_session?->title ?: '-' }}</td>
                     <td class="center"><b>{{ $grade->grade ?? 0 }}</b></td>
                     <td>{{ $grade->isReleased() ? 'Dipublikasikan' : 'Belum dipublikasikan' }}</td>

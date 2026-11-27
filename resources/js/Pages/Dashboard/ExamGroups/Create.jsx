@@ -35,7 +35,7 @@ export default function Create(students) {
         <>
             <Head title={'Tambah Peserta Ujian'} />
             <div className="mb-4 flex justify-end">
-                <div className="w-full md:w-4/12"><Search url={route('exam_sessions.group.create', students.exam_session.id)} placeholder="Cari nama atau NISN siswa" /></div>
+                <div className="w-full md:w-4/12"><Search url={route('exam_sessions.group.create', students.exam_session.id)} placeholder="Cari nama atau NIK peserta" /></div>
             </div>
             <Card
                 title={'Tambah Peserta Ujian'}
@@ -66,7 +66,7 @@ export default function Create(students) {
                                     }}
                                 />
                             </Table.Th>
-                            <Table.Th>NISN</Table.Th>
+                            <Table.Th>NIK</Table.Th>
                             <Table.Th>Nama</Table.Th>
                             <Table.Th>Jenis Kelamin</Table.Th>
                         </tr>
@@ -86,7 +86,7 @@ export default function Create(students) {
                                         }}
                                     />
                                 </Table.Td>
-                                <Table.Td>{student.nisn}</Table.Td>
+                                <Table.Td>{student.nik || student.nisn}</Table.Td>
                                 <Table.Td>{student.name}</Table.Td>
                                 <Table.Td>{student.gender}</Table.Td>
                             </tr>

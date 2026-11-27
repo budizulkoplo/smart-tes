@@ -38,7 +38,7 @@ class ExamReportController extends Controller
                 return [
                     'student_id' => $group->student_id,
                     'name' => $group->student?->name,
-                    'nisn' => $group->student?->nisn,
+                    'nik' => $group->student?->nik ?: $group->student?->nisn,
                     'present' => (bool) ($grade?->start_time || $grade?->end_time),
                 ];
             })->values();
@@ -168,7 +168,7 @@ class ExamReportController extends Controller
             $grade = $grades->get($group->student_id);
             return [
                 'name' => $group->student?->name,
-                'nisn' => $group->student?->nisn,
+                'nik' => $group->student?->nik ?: $group->student?->nisn,
                 'classroom' => $group->student?->classroom?->title,
                 'present' => (bool) ($grade?->start_time || $grade?->end_time),
                 'start_time' => $grade?->start_time,

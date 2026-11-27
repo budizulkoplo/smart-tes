@@ -129,7 +129,7 @@ export default function Index({ students, classrooms }) {
                     <div className='w-full md:w-4/12'>
                         <Search
                             url={route('students.index')}
-                            placeholder={'Cari data berdasarkan nama atau nisn'}
+                            placeholder={'Cari data berdasarkan nama atau NIK'}
                         />
                     </div>
                 </div>
@@ -143,7 +143,7 @@ export default function Index({ students, classrooms }) {
                     <Button type="submit" disabled={importing || !importData.file} className="border bg-teal-700 text-white hover:bg-teal-800 disabled:opacity-50" icon={<IconUsers size={18} />} label={importing ? 'Mengimpor...' : 'Upload Siswa'} />
                 </form>
             </div>
-            <p className="mb-2 text-xs text-gray-500">Jika password dikosongkan, password awal siswa menggunakan NISN. Pastikan NISN di Excel disimpan sebagai teks.</p>
+            <p className="mb-2 text-xs text-gray-500">Jika password dikosongkan, password awal peserta menggunakan NIK. Pastikan NIK di Excel disimpan sebagai teks.</p>
             {importErrors.file && <p className="mb-4 text-sm text-rose-600">{importErrors.file}</p>}
             <Modal
                 show={data.isOpen}
@@ -175,7 +175,7 @@ export default function Index({ students, classrooms }) {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-sm text-gray-600">NISN</label>
+                        <label className="block text-sm text-gray-600">NIK</label>
                         <Input
                             type="text"
                             inputMode="numeric"
@@ -242,7 +242,7 @@ export default function Index({ students, classrooms }) {
                         <tr>
                             <Table.Th className={'w-10'}>No</Table.Th>
                             <Table.Th>Kelas</Table.Th>
-                            <Table.Th>NISN</Table.Th>
+                            <Table.Th>NIK</Table.Th>
                             <Table.Th>Nama</Table.Th>
                             <Table.Th>Jenis Kelamin</Table.Th>
                             <Table.Th></Table.Th>
@@ -259,7 +259,7 @@ export default function Index({ students, classrooms }) {
                                         {student.classroom.title}
                                     </Table.Td>
                                     <Table.Td>
-                                        {student.nisn}
+                                        {student.nik || student.nisn}
                                     </Table.Td>
                                     <Table.Td>
                                         {student.name}

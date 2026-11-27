@@ -64,7 +64,7 @@ class ReportController extends Controller
         $sheet->setTitle('Laporan Ujian');
         $sheet->fromArray([[
             'No', 'Ujian', 'Mata Pelajaran', 'Kelas', 'Semester', 'Sesi',
-            'Nama Siswa', 'NISN', 'Nilai', 'Status Nilai', 'Selesai Pada',
+            'Nama Peserta', 'NIK', 'Nilai', 'Status Nilai', 'Selesai Pada',
         ]]);
 
         foreach ($grades as $index => $grade) {
@@ -76,7 +76,7 @@ class ReportController extends Controller
                 $exam->semester ?: '-',
                 $grade->exam_session?->title ?: '-',
                 $grade->student?->name ?: '-',
-                $grade->student?->nisn ?: '-',
+                $grade->student?->nik ?: $grade->student?->nisn ?: '-',
                 $grade->grade ?? 0,
                 $grade->isReleased() ? 'Dipublikasikan' : 'Belum dipublikasikan',
                 $grade->end_time ? \Illuminate\Support\Carbon::parse($grade->end_time)->format('d/m/Y H:i') : '-',

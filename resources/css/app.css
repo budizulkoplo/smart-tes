@@ -22,3 +22,24 @@
 .ck-editor__editable_inline figure.image {
     max-width: 100%;
 }
+
+.question-content .fraction {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: -0.45em;
+    margin: 0 0.12em;
+    font-size: 0.9em;
+    line-height: 1;
+}
+
+.question-content .fraction > span {
+    display: block;
+    min-width: 1.15em;
+    text-align: center;
+    padding: 0.05em 0.15em;
+}
+
+.question-content .fraction > span:first-child {
+    border-bottom: 1px solid currentColor;
+}

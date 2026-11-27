@@ -45,7 +45,7 @@ class MonitoringController extends Controller
                     'id' => $group->id,
                     'student' => [
                         'name' => $group->student?->name,
-                        'nisn' => $group->student?->nisn,
+                        'nik' => $group->student?->nik ?: $group->student?->nisn,
                     ],
                     'classroom' => $group->student?->classroom?->title,
                     'classroom_id' => $group->student?->classroom_id,

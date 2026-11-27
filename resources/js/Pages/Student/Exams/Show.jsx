@@ -2,11 +2,14 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import { IconArrowLeft, IconArrowRight, IconCheck, IconClock, IconFlag, IconSend } from '@tabler/icons-react';
 import StudentLayout from '@/Layouts/StudentLayout';
+import 'katex/dist/katex.min.css';
+import renderMathInElement from 'katex/dist/contrib/auto-render.mjs';
 
 const END_EXAM_WINDOW_MS = 10 * 60 * 1000;
 
 export default function Show({ id, page, exam_group: group, all_questions: allQuestions, question_active: activeAnswer, question_answered: answered, answer_order: answerOrder, duration }) {
     const question = activeAnswer?.question;
+    const questionRootRef = useRef(null);
     const deadline = duration?.expires_at ? new Date(duration.expires_at).getTime() : null;
     const [remaining, setRemaining] = useState(deadline ? Math.max(0, deadline - Date.now()) : duration?.duration ?? group.exam.duration * 60000);
     const initialAnswer = parseAnswer(activeAnswer?.answer_value, question?.type);
@@ -17,6 +20,19 @@ export default function Show({ id, page, exam_group: group, all_questions: allQu
     const [locked, setLocked] = useState(false);
     const lastViolationAt = useRef(0);
     const canFinishExam = remaining <= END_EXAM_WINDOW_MS;
+
+    useEffect(() => {
+        if (!questionRootRef.current) return;
+
+        renderMathInElement(questionRootRef.current, {
+            delimiters: [
+                { left: '\\(', right: '\\)', display: false },
+                { left: '\\[', right: '\\]', display: true },
+            ],
+            throwOnError: false,
+            strict: false,
+        });
+    }, [page, question?.id]);
 
     useEffect(() => {
         const timer = window.setInterval(() => {
@@ -144,7 +160,7 @@ export default function Show({ id, page, exam_group: group, all_questions: allQu
                 <div className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold ${remaining < 60000 ? 'bg-rose-100 text-rose-700' : 'bg-teal-50 text-teal-700'}`}><IconClock size={17} /> {formatTime(remaining)}</div>
             </div>
             <div className="grid gap-4 lg:grid-cols-[1fr_280px]">
-                <main className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 sm:p-7">
+                <main ref={questionRootRef} className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 sm:p-7">
                     <div className="mb-6 flex items-center justify-between"><span className="text-sm font-semibold text-slate-500">Pertanyaan {page} dari {allQuestions.length}</span><span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">Skor {question.max_score || 10}</span></div>
                     <div className="question-content prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: question.question }} />
                     {question.image && <img src={`/storage/${question.image}`} alt="Ilustrasi soal" className="question-content mt-5 h-auto max-h-80 max-w-full rounded-xl object-contain" />}

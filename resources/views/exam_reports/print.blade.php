@@ -58,10 +58,10 @@
             <div class="stat"><strong>{{ $report->absent_count }}</strong>Tidak Hadir</div>
         </div>
         <table>
-            <thead><tr><th class="center" style="width: 36px">No</th><th>Nama Siswa</th><th>NISN</th><th>Kelas</th><th class="center">Kehadiran</th></tr></thead>
+            <thead><tr><th class="center" style="width: 36px">No</th><th>Nama Peserta</th><th>NIK</th><th>Kelas</th><th class="center">Kehadiran</th></tr></thead>
             <tbody>
                 @forelse ($participants as $index => $participant)
-                    <tr><td class="center">{{ $index + 1 }}</td><td>{{ $participant['name'] ?: '-' }}</td><td>{{ $participant['nisn'] ?: '-' }}</td><td>{{ $participant['classroom'] ?: '-' }}</td><td class="center">{{ $participant['present'] ? 'Hadir' : 'Tidak hadir' }}</td></tr>
+                    <tr><td class="center">{{ $index + 1 }}</td><td>{{ $participant['name'] ?: '-' }}</td><td>{{ $participant['nik'] ?: '-' }}</td><td>{{ $participant['classroom'] ?: '-' }}</td><td class="center">{{ $participant['present'] ? 'Hadir' : 'Tidak hadir' }}</td></tr>
                 @empty
                     <tr><td colspan="5" class="center">Belum ada data peserta.</td></tr>
                 @endforelse
