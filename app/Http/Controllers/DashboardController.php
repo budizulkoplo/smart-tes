@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Classroom;
 use App\Models\Exam;
-use App\Models\Lesson;
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\ExamSession;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -31,26 +30,23 @@ class DashboardController extends Controller
         // Total Guru
         $teachers = $user?->isTeacher() ? 0 : Teacher::query()->count();
 
-        // Total Mata Pelajaran
-        $lessonsQuery = Lesson::query();
-        if ($user?->isTeacher()) {
-            $lessonsQuery->whereHas('teachers', fn ($query) => $query->whereKey($user->teacher?->id));
-        }
-
         $recentExams = (clone $accessibleExams)
-            ->with('classroom', 'lesson')
             ->latest()
             ->take(5)
             ->get();
-        $recentTeachers = $user?->isTeacher() ? collect() : Teacher::with('user')->latest()->take(5)->get();
+        $recentStudents = Student::query()
+            ->latest()
+            ->take(5)
+            ->get();
+        $sessions = ExamSession::query()->count();
 
         return Inertia::render('Dashboard/Index', [
             'exams' => $exams,
             'students' => $students,
             'teachers' => $teachers,
-            'lessons' => $lessonsQuery->count(),
+            'sessions' => $sessions,
             'recentExams' => $recentExams,
-            'recentTeachers' => $recentTeachers,
+            'recentStudents' => $recentStudents,
         ]);
     }
 }

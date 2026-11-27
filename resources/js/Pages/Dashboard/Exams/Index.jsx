@@ -7,13 +7,13 @@ import Widget from '@/Components/Dashboard/Widget';
 import Modal from '@/Components/Dashboard/Modal';
 import DashboardLayout from '@/Layouts/DashboardLayout';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
-import { IconArrowsSort, IconBox, IconChartBar, IconChevronDown, IconChevronUp, IconCirclePlus, IconCopy, IconDatabaseOff, IconEye, IconPackage, IconPencilCheck, IconPencilCog, IconSearch, IconTrash, IconUserShield, IconUsers, IconWallet } from '@tabler/icons-react';
+import { IconArrowsSort, IconBox, IconChartBar, IconChevronDown, IconChevronUp, IconCirclePlus, IconDatabaseOff, IconEye, IconPackage, IconPencilCheck, IconPencilCog, IconSearch, IconTrash, IconUserShield, IconUsers, IconWallet } from '@tabler/icons-react';
 import Input from '@/Components/Dashboard/Input';
 import InputSelect from '@/Components/Dashboard/InputSelect';
 import { useState } from 'react';
 import Textarea from '@/Components/Dashboard/TextArea';
 
-export default function Index({ lessons, classrooms, exams, filters = {} }) {
+export default function Index({ exams, filters = {} }) {
     const { errors } = usePage().props;
     const [search, setSearch] = useState(filters.search || '');
     const [sort, setSort] = useState(filters.sort || 'created_at');
@@ -58,9 +58,6 @@ export default function Index({ lessons, classrooms, exams, filters = {} }) {
     // define form helper inertia
     const { data, setData, transform, post } = useForm({
         id: '',
-        classroom_id: '',
-        semester: '',
-        lesson_id: '',
         title: '',
         duration: '',
         description: '',
@@ -70,30 +67,10 @@ export default function Index({ lessons, classrooms, exams, filters = {} }) {
         isUpdate: false,
         isOpen: false,
     });
-    const copyForm = useForm({ classroom_id: '' });
-
-    // define set selected value
-
     // State for select inputs
-    const [selectedLesson, setSelectedLesson] = useState(null)
-    const [selectedClassroom, setSelectedClassroom] = useState(null)
     const [selectedRandomQuestion, setSelectedRandomQuestion] = useState(null)
     const [selectedRandomAnswer, setSelectedRandomAnswer] = useState(null)
     const [selectedShowAnswer, setSelectedShowAnswer] = useState(null)
-    const [selectedCopyClassroom, setSelectedCopyClassroom] = useState(null)
-    const [copySource, setCopySource] = useState(null)
-
-    // Set gender
-    const setSelectedLessonHandler = (value) => {
-        setSelectedLesson(value)
-        setData('lesson_id', value.id)
-    }
-
-    // Set classroom
-    const setSelectedClassroomHandler = (value) => {
-        setSelectedClassroom(value)
-        setData('classroom_id', value.id)
-    }
 
     // Set random question
     const setSelectedRandomQuestionHandler = (value) => {
@@ -113,41 +90,9 @@ export default function Index({ lessons, classrooms, exams, filters = {} }) {
         setData('show_answer', value.id)
     }
 
-    const openCopyModal = (exam) => {
-        setCopySource(exam)
-        copyForm.reset()
-        copyForm.clearErrors()
-        setSelectedCopyClassroom(null)
-    }
-
-    const setSelectedCopyClassroomHandler = (value) => {
-        setSelectedCopyClassroom(value)
-        copyForm.setData('classroom_id', value.id)
-    }
-
-    const closeCopyModal = () => {
-        setCopySource(null)
-        copyForm.reset()
-        copyForm.clearErrors()
-        setSelectedCopyClassroom(null)
-    }
-
-    const submitCopy = (e) => {
-        e.preventDefault()
-        if (!copySource) return
-
-        copyForm.post(route('exams.copy', copySource.id), {
-            onSuccess: closeCopyModal,
-        })
-    }
-
-
     // transform data before submit
     transform((data) => ({
         title: data.title,
-        lesson_id: data.lesson_id,
-        classroom_id: data.classroom_id,
-        semester: data.semester,
         duration: data.duration,
         description: data.description,
         random_question: data.random_question,
@@ -162,9 +107,6 @@ export default function Index({ lessons, classrooms, exams, filters = {} }) {
         post(route('exams.store'), {
             onSuccess: () => {
                 setData({
-                    classroom_id: '',
-                    semester: '',
-                    lesson_id: '',
                     title: '',
                     duration: '',
                     description: '',
@@ -174,8 +116,6 @@ export default function Index({ lessons, classrooms, exams, filters = {} }) {
                     isUpdate: false,
                     isOpen: false,
                 })
-                setSelectedLesson(null);
-                setSelectedClassroom(null);
                 setSelectedRandomQuestion(null);
                 setSelectedRandomAnswer(null);
                 setSelectedShowAnswer(null);
@@ -190,9 +130,6 @@ export default function Index({ lessons, classrooms, exams, filters = {} }) {
             onSuccess: () => {
                 setData({
                     id: '',
-                    classroom_id: '',
-                    semester: '',
-                    lesson_id: '',
                     title: '',
                     duration: '',
                     description: '',
@@ -202,8 +139,6 @@ export default function Index({ lessons, classrooms, exams, filters = {} }) {
                     isUpdate: false,
                     isOpen: false,
                 });
-                setSelectedLesson(null);
-                setSelectedClassroom(null);
                 setSelectedRandomQuestion(null);
                 setSelectedRandomAnswer(null);
                 setSelectedShowAnswer(null);
@@ -212,7 +147,7 @@ export default function Index({ lessons, classrooms, exams, filters = {} }) {
     }
     return (
         <>
-            <Head title='Pelajar' />
+            <Head title='Ujian' />
             <div className='mb-2'>
                 <div className='flex justify-between items-center gap-2'>
                     <div className='flex flex-row gap-2 items-center'>
@@ -232,7 +167,7 @@ export default function Index({ lessons, classrooms, exams, filters = {} }) {
                     <form onSubmit={submitSearch} className="flex w-full lg:max-w-xl">
                         <div className="relative min-w-0 flex-1">
                             <IconSearch size={18} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                            <input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Cari judul, mata pelajaran, atau kelas..." className="w-full rounded-l-lg border-slate-300 py-2.5 pl-10 pr-4 text-sm focus:border-teal-500 focus:ring-teal-500" />
+                            <input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Cari judul ujian..." className="w-full rounded-l-lg border-slate-300 py-2.5 pl-10 pr-4 text-sm focus:border-teal-500 focus:ring-teal-500" />
                         </div>
                         <button type="submit" className="inline-flex items-center gap-1.5 rounded-r-lg bg-teal-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-teal-800"><IconSearch size={16} /> Cari</button>
                     </form>
@@ -255,9 +190,6 @@ export default function Index({ lessons, classrooms, exams, filters = {} }) {
                     setData({
                         isOpen: false,
                         id: '',
-                        classroom_id: '',
-                        semester: '',
-                        lesson_id: '',
                         title: '',
                         duration: '',
                         description: '',
@@ -302,41 +234,6 @@ export default function Index({ lessons, classrooms, exams, filters = {} }) {
                             className="w-full px-3 py-2 border rounded"
                             required
                             errors={errors.description}
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <InputSelect
-                            label="Mata Pelajaran"
-                            data={lessons}
-                            selected={selectedLesson}
-                            setSelected={setSelectedLessonHandler}
-                            placeholder="Pilih Mata Pelajaran"
-                            errors={errors.lesson_id}
-                            multiple={false}
-                            searchable
-                            displayKey='title'
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="mb-2 block text-sm font-semibold text-slate-700">Semester</label>
-                        <select value={data.semester} onChange={(e) => setData('semester', e.target.value)} className="w-full rounded-lg border-slate-300 bg-white text-sm text-slate-700 focus:border-teal-500 focus:ring-teal-500" required>
-                            <option value="">Pilih semester</option>
-                            <option value="1">Semester 1</option>
-                            <option value="2">Semester 2</option>
-                        </select>
-                        {errors.semester && <p className="mt-1 text-xs text-rose-600">{errors.semester}</p>}
-                    </div>
-                    <div className="mb-4">
-                        <InputSelect
-                            label="Ruang Kelas"
-                            data={classrooms}
-                            selected={selectedClassroom}
-                            setSelected={setSelectedClassroomHandler}
-                            placeholder="Pilih Ruang Kelas"
-                            errors={errors.classroom_id}
-                            multiple={false}
-                            searchable={true}
-                            displayKey='title'
                         />
                     </div>
                     <div className="mb-4">
@@ -387,46 +284,11 @@ export default function Index({ lessons, classrooms, exams, filters = {} }) {
                     />
                 </form>
             </Modal>
-            <Modal
-                show={copySource !== null}
-                onClose={closeCopyModal}
-                title="Salin Ujian"
-            >
-                {copySource && (
-                    <form onSubmit={submitCopy}>
-                        <p className="mb-4 text-sm text-gray-600 dark:text-gray-300">
-                            Salin ujian “{copySource.title}” dari kelas {copySource.classroom.title} beserta pengaturan dan seluruh soalnya.
-                        </p>
-                        <div className="mb-4">
-                            <InputSelect
-                                label="Kelas tujuan"
-                                data={copySource.copy_classrooms}
-                                selected={selectedCopyClassroom}
-                                setSelected={setSelectedCopyClassroomHandler}
-                                placeholder="Pilih kelas tujuan"
-                                errors={copyForm.errors.classroom_id}
-                                searchable
-                                displayKey="title"
-                            />
-                        </div>
-                        <Button
-                            type="submit"
-                            icon={<IconCopy size={18} strokeWidth={1.5} />}
-                            className="border bg-white text-gray-700 hover:bg-gray-100 dark:bg-gray-950 dark:border-gray-800 dark:text-gray-200"
-                            label={copyForm.processing ? 'Menyalin...' : 'Salin Ujian'}
-                            disabled={!copyForm.data.classroom_id || copyForm.processing}
-                        />
-                    </form>
-                )}
-            </Modal>
             <Table.Card title={'Data Ujian'}>
                 <Table>
                     <Table.Thead>
                         <tr>
                             <Table.Th className={'w-10'}>No</Table.Th>
-                            <SortHeader label="Kelas" column="classroom" sort={sort} direction={direction} onSort={changeSort} />
-                            <SortHeader label="Mata Pelajaran" column="lesson" sort={sort} direction={direction} onSort={changeSort} />
-                            <SortHeader label="Semester" column="semester" sort={sort} direction={direction} onSort={changeSort} />
                             <SortHeader label="Ujian" column="title" sort={sort} direction={direction} onSort={changeSort} />
                             <SortHeader label="Durasi" column="duration" sort={sort} direction={direction} onSort={changeSort} />
                             <SortHeader label="Jumlah Soal" column="question_count" sort={sort} direction={direction} onSort={changeSort} />
@@ -439,15 +301,6 @@ export default function Index({ lessons, classrooms, exams, filters = {} }) {
                                 <tr className='hover:bg-gray-100 dark:hover:bg-gray-900' key={exam.id}>
                                     <Table.Td className='text-center'>
                                         {++i + (exams.current_page - 1) * exams.per_page}
-                                    </Table.Td>
-                                    <Table.Td>
-                                        {exam.classroom.title}
-                                    </Table.Td>
-                                    <Table.Td>
-                                        {exam.lesson.title}
-                                    </Table.Td>
-                                    <Table.Td>
-                                        {exam.semester ? `Semester ${exam.semester}` : '-'}
                                     </Table.Td>
                                     <Table.Td>
                                         {exam.title}
@@ -467,32 +320,17 @@ export default function Index({ lessons, classrooms, exams, filters = {} }) {
                                                 href={route('exams.show', exam.id)}
                                                 label={'Detail'}
                                             />
-                                            {exam.copy_classrooms.length > 0 && (
-                                                <Button
-                                                    type={'modal'}
-                                                    icon={<IconCopy size={16} strokeWidth={1.5} />}
-                                                    className={'border bg-sky-100 border-sky-300 text-sky-600 hover:bg-sky-200 dark:bg-sky-950 dark:border-sky-800 dark:text-gray-300 dark:hover:bg-sky-900'}
-                                                    onClick={() => openCopyModal(exam)}
-                                                    title="Salin ujian ke kelas lain pada tingkatan yang sama"
-                                                    aria-label="Salin ujian"
-                                                />
-                                            )}
                                             <Button
                                                 type={'modal'}
                                                 icon={<IconPencilCog size={16} strokeWidth={1.5} />}
                                                 className={'border bg-orange-100 border-orange-300 text-orange-500 hover:bg-orange-200 dark:bg-orange-950 dark:border-orange-800 dark:text-gray-300  dark:hover:bg-orange-900'}
                                                 onClick={() => {
-                                                    const selectedStudentLesson = lessons.find(g => g.id === exam.lesson_id);
-                                                    const selectedStudentClassroom = classrooms.find(c => c.id === exam.classroom_id);
                                                     const selectedRandomQuestion = is_selected.find(r => r.id === exam.random_question);
                                                     const selectedRandomAnswer = is_selected.find(r => r.id === exam.random_answer);
                                                     const selectedShowAnswer = is_selected.find(r => r.id === exam.show_answer);
 
                                                     setData({
                                                         id: exam.id,
-                                                        classroom_id: exam.classroom_id,
-                                                        semester: exam.semester || '',
-                                                        lesson_id: exam.lesson_id,
                                                         title: exam.title,
                                                         duration: exam.duration,
                                                         description: exam.description,
@@ -502,8 +340,6 @@ export default function Index({ lessons, classrooms, exams, filters = {} }) {
                                                         isUpdate: true,
                                                         isOpen: true,
                                                     });
-                                                    setSelectedLesson(selectedStudentLesson);
-                                                    setSelectedClassroom(selectedStudentClassroom);
                                                     setSelectedRandomQuestion(selectedRandomQuestion);
                                                     setSelectedRandomAnswer(selectedRandomAnswer);
                                                     setSelectedShowAnswer(selectedShowAnswer);

@@ -54,18 +54,6 @@ export default function Show({ exam }) {
                     <Table>
                         <Table.Tbody>
                             <tr>
-                                <Table.Td>Kelas</Table.Td>
-                                <Table.Td>{exam.classroom.title}</Table.Td>
-                            </tr>
-                            <tr>
-                                <Table.Td>Mata Pelajaran</Table.Td>
-                                <Table.Td>{exam.lesson.title}</Table.Td>
-                            </tr>
-                            <tr>
-                                <Table.Td>Semester</Table.Td>
-                                <Table.Td>{exam.semester ? `Semester ${exam.semester}` : 'Belum diatur'}</Table.Td>
-                            </tr>
-                            <tr>
                                 <Table.Td>Ujian</Table.Td>
                                 <Table.Td>{exam.title}</Table.Td>
                             </tr>

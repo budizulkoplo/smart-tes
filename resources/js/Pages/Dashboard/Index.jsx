@@ -1,6 +1,6 @@
 import DashboardLayout from '@/Layouts/DashboardLayout';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { IconArrowUpRight, IconBooks, IconBolt, IconHistory, IconReport, IconSettings, IconUserPlus, IconUsers } from '@tabler/icons-react';
+import { IconArrowUpRight, IconBolt, IconHistory, IconReport, IconSettings, IconUserPlus, IconUsers } from '@tabler/icons-react';
 
 const statStyles = {
     blue: { border: 'border-blue-500', icon: 'bg-blue-600', iconComponent: <IconUsers size={24} /> },
@@ -9,23 +9,23 @@ const statStyles = {
     amber: { border: 'border-amber-500', icon: 'bg-amber-500', iconComponent: <IconBooks size={24} /> },
 };
 
-export default function Dashboard({ exams, students, teachers, lessons, recentExams, recentTeachers }) {
+export default function Dashboard({ exams, students, teachers, sessions, recentExams, recentStudents }) {
     const { props } = usePage();
     const auth = props.auth || {};
     const canManageMasterData = auth.teacher !== true;
 
     const stats = [
-        { label: 'SISWA', value: students, color: 'blue' },
-        { label: 'GURU', value: teachers, color: 'green' },
-        { label: 'TOTAL UJIAN', value: exams, color: 'cyan' },
-        { label: 'MATA PELAJARAN', value: lessons, color: 'amber' },
+        { label: 'PESERTA SELEKSI', value: students, color: 'blue' },
+        { label: 'PENGELOLA', value: teachers, color: 'green' },
+        { label: 'TES SELEKSI', value: exams, color: 'cyan' },
+        { label: 'TOTAL SESI', value: sessions, color: 'amber' },
     ];
 
     const actions = [
-        { label: 'Kelola Siswa', href: route('students.index'), color: 'blue', icon: <IconUsers size={18} />, show: canManageMasterData },
-        { label: 'Kelola Guru', href: route('teachers.index'), color: 'green', icon: <IconUserPlus size={18} />, show: canManageMasterData },
-        { label: 'Kelola Mata Pelajaran', href: route('lessons.index'), color: 'cyan', icon: <IconBooks size={18} />, show: true },
-        { label: 'Kelola Ujian', href: route('exams.index'), color: 'amber', icon: <IconReport size={18} />, show: true },
+        { label: 'Kelola Peserta Seleksi', href: route('students.index'), color: 'blue', icon: <IconUsers size={18} />, show: canManageMasterData },
+        { label: 'Kelola Pengguna', href: route('teachers.index'), color: 'green', icon: <IconUserPlus size={18} />, show: canManageMasterData },
+        { label: 'Kelola Tes Seleksi', href: route('exams.index'), color: 'amber', icon: <IconReport size={18} />, show: true },
+        { label: 'Kelola Sesi Tes', href: route('exam_sessions.index'), color: 'cyan', icon: <IconHistory size={18} />, show: true },
         { label: 'Kelola Soal', href: route('exams.index'), color: 'slate', icon: <IconBolt size={18} />, show: true },
         { label: 'Pengaturan', href: route('settings.index'), color: 'slate', icon: <IconSettings size={18} />, show: canManageMasterData },
     ];
@@ -45,11 +45,11 @@ export default function Dashboard({ exams, students, teachers, lessons, recentEx
 
             <div className="grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(300px,1fr)]">
                 <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-gray-950">
-                    <PanelHeader icon={<IconHistory size={21} />} title="Ujian Terbaru" href={route('exams.index')} />
+                    <PanelHeader icon={<IconHistory size={21} />} title="Tes Seleksi Terbaru" href={route('exams.index')} />
                     <div className="divide-y divide-slate-200 dark:divide-slate-800">
                         {recentExams.length ? recentExams.map((exam) => <div key={exam.id} className="flex items-center gap-4 px-5 py-4">
                             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-600 text-2xl text-white">+</div>
-                            <div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold uppercase tracking-wide text-slate-700 dark:text-slate-200">{exam.title}</p><p className="truncate text-sm text-slate-500">{exam.lesson?.title || '-'} · {formatRelativeDate(exam.created_at)}</p></div>
+                            <div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold uppercase tracking-wide text-slate-700 dark:text-slate-200">{exam.title}</p><p className="truncate text-sm text-slate-500">{formatRelativeDate(exam.created_at)}</p></div>
                             <span className="rounded-md bg-blue-600 px-2 py-1 text-xs font-semibold text-white">Baru</span>
                         </div>) : <Empty text="Belum ada ujian." />}
                     </div>
@@ -64,13 +64,13 @@ export default function Dashboard({ exams, students, teachers, lessons, recentEx
             </div>
 
             <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-gray-950">
-                <PanelHeader icon={<IconUserPlus size={21} />} title="Guru Terbaru" href={canManageMasterData ? route('teachers.index') : undefined} />
+                <PanelHeader icon={<IconUsers size={21} />} title="Peserta Seleksi Terbaru" href={canManageMasterData ? route('students.index') : undefined} />
                 <div className="divide-y divide-slate-200 dark:divide-slate-800">
-                    {recentTeachers.length ? recentTeachers.map((teacher) => <div key={teacher.id} className="flex items-center gap-4 px-5 py-4">
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white"><IconUserPlus size={20} /></div>
-                        <div className="flex-1"><p className="text-sm font-semibold uppercase tracking-wide text-slate-700 dark:text-slate-200">{teacher.user?.name || '-'}</p><p className="text-sm text-slate-500">Bergabung {formatRelativeDate(teacher.created_at)}</p></div>
+                    {recentStudents.length ? recentStudents.map((student) => <div key={student.id} className="flex items-center gap-4 px-5 py-4">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white"><IconUsers size={20} /></div>
+                        <div className="flex-1"><p className="text-sm font-semibold uppercase tracking-wide text-slate-700 dark:text-slate-200">{student.name || '-'}</p><p className="text-sm text-slate-500">NIK {student.nik || student.nisn || '-'} · {formatRelativeDate(student.created_at)}</p></div>
                         <span className="rounded-md bg-emerald-600 px-2 py-1 text-xs font-semibold text-white">Baru</span>
-                    </div>) : <Empty text="Belum ada data guru." />}
+                    </div>) : <Empty text="Belum ada peserta seleksi." />}
                 </div>
             </section>
         </div>

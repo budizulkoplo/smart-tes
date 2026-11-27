@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 
 class Exam extends Model
 {
@@ -63,16 +62,6 @@ class Exam extends Model
 
     public function scopeAccessibleBy(Builder $query, ?User $user): Builder
     {
-        if (!$user || !$user->isTeacher()) return $query;
-
-        return $query->whereExists(function ($assignment) use ($user) {
-            $assignment->select(DB::raw(1))
-                ->from('teacher_lesson_classroom as tlc')
-                ->join('teachers as teacher', 'teacher.id', '=', 'tlc.teacher_id')
-                ->whereColumn('tlc.lesson_id', 'exams.lesson_id')
-                ->whereColumn('tlc.classroom_id', 'exams.classroom_id')
-                ->where('teacher.user_id', $user->id)
-                ->whereNull('teacher.deleted_at');
-        });
+        return $query;
     }
 }
