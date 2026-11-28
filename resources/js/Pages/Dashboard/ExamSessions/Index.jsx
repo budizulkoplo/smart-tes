@@ -37,7 +37,7 @@ export default function Index({ exam_sessions, exams }) {
     }
 
     const formatExamOption = (exam) => {
-        return `${exam.title} - ${exam.lesson.title} - ${exam.classroom.title}`;
+        return `${exam.title} - ${exam.lesson?.title || 'Tanpa mata pelajaran'} - ${exam.classroom?.title || 'Tanpa kelas'}`;
     };
 
     // State for select inputs
@@ -251,10 +251,10 @@ export default function Index({ exam_sessions, exams }) {
                                         {i + 1}
                                     </Table.Td>
                                     <Table.Td>
-                                        <strong>{exam_session.exam.title}</strong>
+                                        <strong>{exam_session.exam?.title || 'Ujian tidak tersedia'}</strong>
                                         <ul className='mt-1'>
-                                            <li>Pelajaran : {exam_session.exam.lesson.title}</li>
-                                            <li>Kelas : {exam_session.exam.classroom.title}</li>
+                                            <li>Pelajaran : {exam_session.exam?.lesson?.title || '-'}</li>
+                                            <li>Kelas : {exam_session.exam?.classroom?.title || '-'}</li>
                                         </ul>
                                     </Table.Td>
                                     <Table.Td>{exam_session.title}</Table.Td>
